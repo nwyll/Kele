@@ -1,4 +1,5 @@
 require 'httparty'
+require 'json'
 
 class Kele
   include HTTParty
@@ -16,9 +17,19 @@ class Kele
     })
     
     if response.success?
-      @user_auth_token = response['auth_token']
+      @auth_token = response['auth_token']
     else
       raise "Invalid username or password. Please try again"
+    end
+  end
+  
+  def get_me
+    response = self.class.get('/users/me', headers: { "authorization" => @auth_token })
+    
+    if response.success?
+      JSON.parse(response.body)
+    else
+      raise response.response
     end
   end
   
