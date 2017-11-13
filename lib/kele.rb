@@ -33,4 +33,14 @@ class Kele
     end
   end
   
+  def get_mentor_availability(mentor_id)
+    response = self.class.get("/mentors/#{mentor_id}/student_availability", headers: { "authorization" => @auth_token })
+    
+    if response.success?
+      JSON.parse(response.body)
+    else
+      raise response.response
+    end
+  end
+  
 end
