@@ -43,4 +43,14 @@ class Kele
     end
   end
   
+  def get_roadmap(roadmap_id)
+    response = self.class.get("/roadmaps/#{roadmap_id}", headers: { "authorization" => @auth_token })
+    
+    if response.success?
+      JSON.parse(response.body)
+    else
+      raise response.response
+    end
+  end
+  
 end
