@@ -8,19 +8,18 @@ class Kele
   
   base_uri 'https://www.bloc.io/api/v1'
   
-  #don't know if this is neccessary
-  attr_accessor :email, :password
-  
   def initialize(email, password)
-    @email, @password = email, password #or this
+    @email = email
     
     response = self.class.post('/sessions', body: {
       email: @email, 
-      password: @password
+      password: password
     })
     
     if response.success?
       @auth_token = response['auth_token']
+      @enrollment_id = get_me["current_enrollment"]["id"]
+      @mentor_id = get_me["current_enrollment"]["mentor_id"]
     else
       raise "Invalid username or password. Please try again"
     end
@@ -36,8 +35,8 @@ class Kele
     end
   end
   
-  def get_mentor_availability(mentor_id)
-    response = self.class.get("/mentors/#{mentor_id}/student_availability", headers: { "authorization" => @auth_token })
+  def get_mentor_availability
+    response = self.class.get("/mentors/#{@mentor_id}/student_availability", headers: { "authorization" => @auth_token })
     
     if response.success?
       JSON.parse(response.body)
@@ -46,13 +45,13 @@ class Kele
     end
   end
   
-  def get_messages(*page_number)
-    if page_number.empty?
+  def get_messages(page_number=0)
+    if page_number == 0
       url = "/message_threads"
       response = self.class.get(url, headers: { "authorization" => @auth_token })
     else
-      url = "/message_threads?page=#{page_number[0]}"
-      response = self.class.get(url, headers: { "authorization" => @auth_token }, body: { page: page_number[0] }) 
+      url = "/message_threads?page=#{page_number}"
+      response = self.class.get(url, headers: { "authorization" => @auth_token }, body: { page: page_number }) 
     end
     
     if response.success?
@@ -62,20 +61,19 @@ class Kele
     end
   end
   
-  # def create_message(recipient, token, subject, text)
-  #   response = self.class.post("/message_threads", headers: { "authorization" => @auth_token }, body: { 
-  #     sender: @email,
-  #     recipient_id: recipient,
-  #     token: token,
-  #     subject: subject,
-  #     stripped-text: text
-  #   }) 
+  def create_message(subject, text, recipient=@mentor_id)
+    response = self.class.post("/messages", headers: { "authorization" => @auth_token }, body: { 
+      "sender" => @email,
+      "recipient_id" => recipient,
+      "subject" => subject,
+      "stripped-text" => text
+    }) 
     
-  #   if response.success?
-  #     "Message sent."
-  #   else
-  #     raise response.response
-  #   end
-  # end
+    if response.success?
+      "Message sent." 
+    else
+      raise "There was and error sending the message. Please try again."
+    end
+  end
   
 end
