@@ -46,4 +46,36 @@ class Kele
     end
   end
   
+  def get_messages(*page_number)
+    if page_number.empty?
+      url = "/message_threads"
+      response = self.class.get(url, headers: { "authorization" => @auth_token })
+    else
+      url = "/message_threads?page=#{page_number[0]}"
+      response = self.class.get(url, headers: { "authorization" => @auth_token }, body: { page: page_number[0] }) 
+    end
+    
+    if response.success?
+      JSON.parse(response.body)
+    else
+      raise response.response
+    end
+  end
+  
+  # def create_message(recipient, token, subject, text)
+  #   response = self.class.post("/message_threads", headers: { "authorization" => @auth_token }, body: { 
+  #     sender: @email,
+  #     recipient_id: recipient,
+  #     token: token,
+  #     subject: subject,
+  #     stripped-text: text
+  #   }) 
+    
+  #   if response.success?
+  #     "Message sent."
+  #   else
+  #     raise response.response
+  #   end
+  # end
+  
 end
