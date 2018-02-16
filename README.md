@@ -24,7 +24,7 @@ Or install it yourself as:
 
 Require kele Gem on irb:
 
-    require 'kele'
+    require 'kele_wyll'
 
 Create a new variable using your Bloc login email and password. Kele will securely post your credentials to Bloc's API for an authentication token!
 
