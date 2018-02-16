@@ -6,7 +6,7 @@
    s.description   = 'A client for the Bloc API'
    s.authors       = ['Natalie Wyll']
    s.email         = 'nataliewyll@yahoo.com'
-   s.files         = ['lib/kele.rb', 'lib/roadmap.rb']
+   s.files         = ['lib/kele_wyll.rb', 'lib/roadmap.rb']
    s.require_paths = ["lib"]
    s.homepage      =
      'http://rubygems.org/gems/kele_wyll'
