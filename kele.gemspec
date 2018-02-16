@@ -1,5 +1,5 @@
  Gem::Specification.new do |s|
-   s.name          = 'kele'
+   s.name          = 'kele_wyll'
    s.version       = '0.0.1'
    s.date          = '2017-11-13'
    s.summary       = 'Kele API Client'
@@ -9,7 +9,7 @@
    s.files         = ['lib/kele.rb', 'lib/roadmap.rb']
    s.require_paths = ["lib"]
    s.homepage      =
-     'http://rubygems.org/gems/kele'
+     'http://rubygems.org/gems/kele_wyll'
    s.license       = 'MIT'
    s.add_runtime_dependency 'httparty', '~> 0.13'
    s.add_runtime_dependency 'json', '~> 2.1'
